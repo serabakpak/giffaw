@@ -1,41 +1,33 @@
-var endpoint = 'http://api.giphy.com/v1/gifs/trending?api_key=dc6zaTOxFJmzC';
-
-var endpoint2 = 'http://api.giphy.com/v1/gifs/search?';
+var endpointTrending = 'http://api.giphy.com/v1/gifs/trending?api_key=dc6zaTOxFJmzC';
+var endpointSearch = 'http://api.giphy.com/v1/gifs/search?';
 
 $(document).on("ready", function(){
 	
-	//ajax captures the json object into json variable
+	// loads top 25 trending gifs
 	$.ajax( {
 			method: 'GET',
-			url: endpoint,
+			url: endpointTrending,
 			success: onSuccess,
 			error: onError
 		});
 
+	// user can search for gifs with input field
 	$('.form-inline').on('submit', function (event) {
-		event.preventDefault();
-		var formData = $(this).serialize();
-		$(".gif-gallery").empty();		
+		event.preventDefault();				
 		$.ajax( {
 			method: 'GET',
-			url: endpoint2 + $('.form-inline').serialize(),
-			success: onSubmitReqSuccess,
+			url: endpointSearch + $('.form-inline').serialize(),
+			success: onSuccess,
 			error: onError
 		});
 	})
+});
 
 function onSuccess(json) { 
-	
+	$(".gif-gallery").empty();
 	for (var i = 0; i < json.data.length; i++) {
     	$(".gif-gallery").append('<img src="' + json.data[i].images.fixed_height.url + '">');
 	}  
-}
-
-function onSubmitReqSuccess(json) {
-	console.log(json);
-	for (var i = 0; i < json.data.length; i++) {
-    	$(".gif-gallery").append('<img src="' + json.data[i].images.fixed_height.url + '">');
-	} 
 }
 
 function onError(xhr, status, errorThrown) {
@@ -44,8 +36,3 @@ function onError(xhr, status, errorThrown) {
     console.log("Status: " + status);
     console.dir(xhr);
 }
-
-
-});
-
-

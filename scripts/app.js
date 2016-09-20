@@ -16,7 +16,8 @@ $(document).on("ready", function(){
 		event.preventDefault();				
 		$.ajax( {
 			method: 'GET',
-			url: endpointSearch + $('.form-inline').serialize(),
+			url: endpointSearch,
+			data: $('.form-inline').serialize(),
 			success: onSuccess,
 			error: onError
 		});
